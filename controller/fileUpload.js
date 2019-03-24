@@ -16,8 +16,8 @@ exports.uploadFile = async (ctx, next) => {
 }
 
 exports.uploadImg = async (ctx, next) => {
-    let originalname = ctx.req.file.originalname
-    let path = `${config.image.wwww}/${originalname}`
+    let filename = ctx.req.file.filename
+    let path = `${config.image.wwww}/${filename}`
     ctx.rest({
         fileName: path
     })

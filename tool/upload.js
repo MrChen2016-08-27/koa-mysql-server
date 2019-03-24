@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const config = require('../config')
 const ApiError = require('../config/ApiError')
+const moment = require('moment')
 
 exports.getMulterUploadExcel = function() {
     const storage = multer.diskStorage({
@@ -42,9 +43,9 @@ exports.getMulterUploadImg = function() {
                 file.originalname.lastIndexOf('.')
             )
             if (file.mimetype === 'image/png') {
-                filename + Date.now() + '.png'
+                filename = `${filename}-${moment().unix()}.png`
             } else {
-                filename + Date.now() + '.jpg'
+                filename = `${filename}-${moment().unix()}.jpg`
             }
             cb(null, filename)
         }
