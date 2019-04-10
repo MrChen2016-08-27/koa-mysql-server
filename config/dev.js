@@ -21,7 +21,7 @@ module.exports = {
     mysql: {
         database: 'test',
         username: 'root',
-        password: 'xxxxxx',
+        password: 'xxxxxxxx',
         host: 'localhost',
         port: '3306',
         pool: {
@@ -48,7 +48,7 @@ module.exports = {
         // /^\/$/
     ],
     file: {
-        wwww: 'file_dist',
+        wwww: '/file_dist',
         local: 'public/file_dist'
     },
     image: {

@@ -4,6 +4,7 @@ const path = require('path')
 const config = require('../config')
 const ApiError = require('../config/ApiError')
 const moment = require('moment')
+const crypto = require('crypto')
 
 exports.getMulterUploadExcel = function() {
     const storage = multer.diskStorage({
@@ -42,10 +43,15 @@ exports.getMulterUploadImg = function() {
                 0,
                 file.originalname.lastIndexOf('.')
             )
+
             if (file.mimetype === 'image/png') {
-                filename = `${filename}-${moment().unix()}.png`
+                filename = `${filename}-${moment().format(
+                    'YYYY-MM-DD.HH.mm.ss'
+                )}.png`
             } else {
-                filename = `${filename}-${moment().unix()}.jpg`
+                filename = `${filename}-${moment().format(
+                    'YYYY-MM-DD.HH.mm.ss'
+                )}.jpg`
             }
             cb(null, filename)
         }

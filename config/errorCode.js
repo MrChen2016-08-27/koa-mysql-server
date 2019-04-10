@@ -10,5 +10,6 @@ module.exports = {
     super_admin_not_update: '超级管理员角色禁止被修改',
     role_name_repeat: '该角色名称已经存在',
     auth_shortage: '访问权限不足',
-    column_name_repeat: '该栏目名称已经存在'
+    module_name_repeat: '该模块名称已经存在',
+    column_name_repeat: '该栏目名称已经存在',
 }

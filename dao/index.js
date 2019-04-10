@@ -5,5 +5,8 @@ module.exports = new Sequelize(mysql.database, mysql.username, mysql.password, {
     dialect: 'mysql',
     port: mysql.port,
     pool: mysql.pool,
-    logging: mysql.logging
+    logging: mysql.logging,
+    // 是否将undefined转化为NULL
+    // - 默认: false
+    omitNull: true
 })

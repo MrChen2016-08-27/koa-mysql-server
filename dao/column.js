@@ -2,15 +2,25 @@ const models = require('../model')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
-exports.getColumnList = async ({ pageNumber = 0, pageSize = 10, keyword }) => {
+exports.getColumnList = async ({
+    pageNumber = 0,
+    pageSize = 10,
+    keyword,
+    moduleId
+}) => {
     keyword = keyword ? `%${keyword}%` : '%%'
     pageNumber = Number(pageNumber)
     pageSize = Number(pageSize)
+    let whereOptions = {}
+    if (moduleId) {
+        whereOptions.moduleId = moduleId
+    }
     return await models.Column.findAndCountAll({
         where: {
             name: {
                 [Op.like]: keyword
-            }
+            },
+            ...whereOptions
         },
         offset: pageNumber * pageSize,
         limit: pageSize,
@@ -23,10 +33,11 @@ exports.getColumn = async id => {
     return column
 }
 
-exports.updateColumn = async ({ id, name, cuser }) => {
+exports.updateColumn = async ({ id, name, moduleId, cuser }) => {
     return await models.Column.update(
         {
             name,
+            moduleId,
             cuser
         },
         {
@@ -45,9 +56,10 @@ exports.deleteColumn = async id => {
     })
 }
 
-exports.addColumn = async ({ name, cuser }) => {
+exports.addColumn = async ({ name, moduleId, cuser }) => {
     return await models.Column.create({
         name,
+        moduleId,
         cuser
     })
 }

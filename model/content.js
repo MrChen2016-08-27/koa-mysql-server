@@ -13,18 +13,33 @@ const Content = mysqlORM.define('content', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    // 封面图
+    icon: {
+        type: Sequelize.STRING
+    },
     // 描述
     description: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1234),
         allowNull: false
     },
     // 内容
     content: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.TEXT
+    },
+    // 来源类型 0.自定义 1.链接
+    sourceType: {
+        type: Sequelize.INTEGER
+    },
+    // 来源链接
+    source: {
+        type: Sequelize.STRING
     },
     // 栏目ID
     columnId: {
+        type: Sequelize.INTEGER
+    },
+    // 栏目子分类Id
+    columnTypeId: {
         type: Sequelize.INTEGER
     },
     // 分类ID

@@ -27,6 +27,21 @@ function filterAuthMenus(authObj, list) {
     return results
 }
 
+function sortMenus(authMenus, localMenus) {
+    let results = []
+    localMenus.forEach((item) => {
+        let result = authMenus.find(item2 => item2.id == item.id)
+        if (result) {
+            result = _lang.cloneDeep(result)
+            if (result.children) {
+                result.children = sortMenus(result.children, item.children)
+            }
+            results.push(result)
+        }
+    });
+    return results
+}
+
 // exports.login = async (ctx, next) => {
 //     let { username, password } = ctx.request.body;
 //     password = Rsa.decrypKey(ctx.session, password);
@@ -194,7 +209,10 @@ exports.getTokenUser = async (ctx, next) => {
     if (userInfo.data.authority.all) {
         menus = appRouter
     } else {
+        // 过滤出权限菜单
         menus = filterAuthMenus(userInfo.data.authority, appRouter)
+        // 按照配置菜单重新排序
+        menus = sortMenus(menus, appRouter)
     }
     ctx.rest({
         ...userInfo.data,
