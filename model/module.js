@@ -7,6 +7,12 @@ const Module = mysqlORM.define('module', {
         primaryKey: true,
         autoIncrement: true
     },
+    // 标识
+    mark: {
+        type: Sequelize.INTEGER,
+        unique: true,
+        allowNull: false
+    },
     name: {
         type: Sequelize.STRING,
         unique: true,

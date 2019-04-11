@@ -6,14 +6,14 @@ exports.getColumnList = async ({
     pageNumber = 0,
     pageSize = 10,
     keyword,
-    moduleId
+    moduleMark
 }) => {
     keyword = keyword ? `%${keyword}%` : '%%'
     pageNumber = Number(pageNumber)
     pageSize = Number(pageSize)
     let whereOptions = {}
-    if (moduleId) {
-        whereOptions.moduleId = moduleId
+    if (moduleMark) {
+        whereOptions.moduleMark = moduleMark
     }
     return await models.Column.findAndCountAll({
         where: {
@@ -33,11 +33,11 @@ exports.getColumn = async id => {
     return column
 }
 
-exports.updateColumn = async ({ id, name, moduleId, cuser }) => {
+exports.updateColumn = async ({ id, name, moduleMark, cuser }) => {
     return await models.Column.update(
         {
             name,
-            moduleId,
+            moduleMark,
             cuser
         },
         {
@@ -56,10 +56,10 @@ exports.deleteColumn = async id => {
     })
 }
 
-exports.addColumn = async ({ name, moduleId, cuser }) => {
+exports.addColumn = async ({ name, moduleMark, cuser }) => {
     return await models.Column.create({
         name,
-        moduleId,
+        moduleMark,
         cuser
     })
 }

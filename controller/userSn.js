@@ -7,6 +7,7 @@ exports.addUserSn = async (ctx, next) => {
     // 位数
     let { snLength } = ctx.request.body
     let resultList = await createUniqueSn(snLength)
+    console.log("----生成完毕----");
     ctx.rest({
         resultList
     })
@@ -31,6 +32,7 @@ async function createUniqueSn(snLength = 8) {
         }
         result += String(i)
         await userSnApi.addSN(result)
+        console.log("正在预生成用户编码...");
         resultList.push(result)
     }
     return resultList

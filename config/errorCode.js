@@ -11,5 +11,6 @@ module.exports = {
     role_name_repeat: '该角色名称已经存在',
     auth_shortage: '访问权限不足',
     module_name_repeat: '该模块名称已经存在',
+    module_mark_repeat: '该模块标识已经存在',
     column_name_repeat: '该栏目名称已经存在',
 }

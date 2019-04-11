@@ -24,7 +24,11 @@ exports.updateModule = async (ctx, next) => {
         await moduleApi.updateModule(params)
     } catch (e) {
         if (e.name == 'SequelizeUniqueConstraintError') {
-            throw new ctx.ApiError('module_name_repeat')
+            if (e.fields.name) {
+                throw new ctx.ApiError('module_name_repeat')
+            } else if (e.fields.mark) {
+                throw new ctx.ApiError('module_mark_repeat')
+            }
         }
     }
     ctx.rest(null)
@@ -39,7 +43,11 @@ exports.addModule = async (ctx, next) => {
         result = await moduleApi.addModule(params)
     } catch (e) {
         if (e.name == 'SequelizeUniqueConstraintError') {
-            throw new ctx.ApiError('module_name_repeat')
+            if (e.fields.name) {
+                throw new ctx.ApiError('module_name_repeat')
+            } else if (e.fields.mark) {
+                throw new ctx.ApiError('module_mark_repeat')
+            }
         }
     }
     ctx.rest(result)

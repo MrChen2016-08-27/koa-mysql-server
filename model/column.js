@@ -12,7 +12,7 @@ const Column = mysqlORM.define('column', {
         unique: true,
         allowNull: false
     },
-    moduleId: {
+    moduleMark: {
         type: Sequelize.INTEGER
     },
     // 最后一次修改用户

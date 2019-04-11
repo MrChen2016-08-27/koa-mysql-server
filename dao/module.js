@@ -19,15 +19,16 @@ exports.getModuleList = async ({ pageNumber = 0, pageSize = 10, keyword }) => {
 }
 
 exports.getModule = async id => {
-    let column = await models.Module.findById(id)
-    return column
+    let result = await models.Module.findById(id)
+    return result
 }
 
-exports.updateModule = async ({ id, name, cuser }) => {
+exports.updateModule = async ({ id, name, cuser, mark }) => {
     return await models.Module.update(
         {
             name,
-            cuser
+            cuser,
+            mark
         },
         {
             where: {
@@ -45,9 +46,10 @@ exports.deleteModule = async id => {
     })
 }
 
-exports.addModule = async ({ name, cuser }) => {
+exports.addModule = async ({ name, cuser, mark }) => {
     return await models.Module.create({
         name,
-        cuser
+        cuser,
+        mark
     })
 }

@@ -8,6 +8,8 @@ const Column = require('./column')
 const Type = require('./type')
 const Content = require('./content')
 const Review = require('./review')
+const mysqlORM = require('../dao/index')
+
 
 User.hasOne(Code, { foreignKey: 'userId', sourceKey: 'id' })
 
@@ -25,8 +27,8 @@ Type.belongsTo(User, { foreignKey: 'cuser', targetkey: 'username' })
 Column.hasMany(Type, { foreignKey: 'columnId', sourceKey: 'id' })
 Type.belongsTo(Column, { foreignKey: 'columnId', targetkey: 'id' })
 
-Module.hasMany(Column, { foreignKey: 'moduleId', sourceKey: 'id' })
-Column.belongsTo(Module, { foreignKey: 'moduleId', targetkey: 'id' })
+Module.hasMany(Column, { foreignKey: 'moduleMark', sourceKey: 'mark' })
+Column.belongsTo(Module, { foreignKey: 'moduleMark', targetkey: 'mark' })
 
 User.hasMany(Content, { foreignKey: 'cuser', sourceKey: 'username' })
 Content.belongsTo(User, { foreignKey: 'cuser', targetkey: 'username' })
@@ -49,16 +51,19 @@ Review.belongsTo(Content, { foreignKey: 'contentId', targetkey: 'id' })
 
 
 
-User.sync()
-Role.sync()
-Code.sync()
-UserRole.sync()
-UserSn.sync()
-Module.sync()
-Column.sync()
-Type.sync()
-Content.sync()
-Review.sync()
+// User.sync()
+// Role.sync()
+// Code.sync()
+// UserRole.sync()
+// UserSn.sync()
+// Module.sync()
+// Column.sync()
+// Type.sync()
+// Content.sync()
+// Review.sync()
+
+mysqlORM.sync()
+
 
 module.exports = {
     User,
