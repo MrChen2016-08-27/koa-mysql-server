@@ -50,6 +50,9 @@ exports.addUser = async (
 // 给指定用户添加角色
 exports.addUserRole = async (userId, roleIds) => {
     let user = await models.User.findById(userId)
+    if (!roleIds || roleIds.length <= 0) {
+        return user;
+    }
     let roles = await models.Role.findAll({
         where: {
             id: {
@@ -64,7 +67,13 @@ exports.addUserRole = async (userId, roleIds) => {
 // 修改用户角色
 exports.updateUserRole = async (userId, roleIds) => {
     let user = await models.User.findById(userId)
+    if (!roleIds) {
+        return;
+    }
     await user.setRoles([])
+    if (roleIds.length <= 0) {
+        return;
+    }
     let roles = await models.Role.findAll({
         where: {
             id: {
