@@ -12,3 +12,15 @@ exports.get = (key) => {
         });
     });
 }
+
+exports.delete = (keys) => {
+    return new Promise((resolve, reject) => {
+        store.del(keys, function (err) {
+            if (!err) {
+                resolve();
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
