@@ -9,6 +9,8 @@ const userSnApi = require('../dao/userSn')
 const moment = require('moment')
 const { appRouter } = require('./role/menus')
 const _lang = require('lodash/lang')
+const redisTool = require('../tool/redis_tool')
+const redis = require('../tool/redis')
 
 function filterAuthMenus(authObj, list) {
     let results = []
@@ -96,8 +98,9 @@ exports.login = async (ctx, next) => {
         id: result.id,
         mobile: result.mobile,
         username: result.username,
-        authority: result.authority
     }
+    // 权限存到redis中对应用户id
+    redis.set(`user_auth_${result.id}`, JSON.stringify(result.authority));
     ctx.rest({
         token: jwt.sign({ data: uData }, config.jwt.secret, {
             expiresIn: config.jwt.expiresIn
@@ -204,13 +207,15 @@ function getRolesMaxAuth(roleList) {
 
 exports.getTokenUser = async (ctx, next) => {
     const userInfo = ctx.state.user
+    // 查询redis中用户对应权限
+    let authority = await this.getUserAuth(userInfo.data.id)
     let menus = null
     // 如果all字段为true，则放行所有权限
-    if (userInfo.data.authority.all) {
+    if (authority.all) {
         menus = appRouter
     } else {
         // 过滤出权限菜单
-        menus = filterAuthMenus(userInfo.data.authority, appRouter)
+        menus = filterAuthMenus(authority, appRouter)
         // 按照配置菜单重新排序
         menus = sortMenus(menus, appRouter)
     }
@@ -287,4 +292,16 @@ exports.getUserList = async (ctx, next) => {
         list: result.rows,
         count: result.count
     })
+}
+
+exports.getUserAuth = async (userId) => {
+    let authority = await redisTool.get(`user_auth_${userId}`)
+    if (!authority) {
+        let result = await userApi.getUserRole(userId)
+        authority = getRolesMaxAuth(result.roles)
+        redis.set(`user_auth_${userId}`, JSON.stringify(authority))
+    } else {
+        authority = JSON.parse(authority)
+    }
+    return authority
 }

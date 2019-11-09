@@ -23,3 +23,15 @@ exports.delete = (keys) => {
         })
     })
 }
+
+exports.set = (key, value, seconds) => {
+    return new Promise((resolve, reject) => {
+        store.set(key, value, 'EX', seconds, function (err) {
+            if (err) {
+                reject(err)
+            } else {
+                resolve()
+            }
+        })
+    })
+}

@@ -1,6 +1,8 @@
 const models = require('../model')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
+const redisTool = require('../tool/redis_tool')
+const redis = require('../tool/redis')
 
 // 获取用户信息
 exports.getUser = async where => {
@@ -70,6 +72,7 @@ exports.updateUserRole = async (userId, roleIds) => {
     if (!roleIds) {
         return;
     }
+    await redisTool.delete(`user_auth_${userId}`)
     await user.setRoles([])
     if (roleIds.length <= 0) {
         return;
@@ -81,7 +84,12 @@ exports.updateUserRole = async (userId, roleIds) => {
             }
         }
     })
-    return await user.setRoles(roles)
+    await user.setRoles(roles)
+    // 防止删除后执行sql未完成时请求的缓存
+    let exitAuth = await redisTool.get(`user_auth_${userId}`)
+    if (exitAuth) {
+        redisTool.delete(`user_auth_${userId}`)
+    }
 }
 
 // 修改用户信息(非关键信息)

@@ -4,6 +4,8 @@ const Redis = require('../tool/redis')
 const api = require('./api')
 const page = require('./page')
 const { appRouter } = require('../controller/role/menus')
+const { getUserAuth } = require('../controller/user')
+
 
 // 对post请求的频率监控
 router.post(
@@ -26,7 +28,10 @@ router.post(
 // 对每个接口的不同角色的权限访问控制
 router.all('*', async (ctx, next) => {
     const path = ctx.path
-    const authority = ctx.state.user ? ctx.state.user.data.authority : {}
+    let authority = {}
+    if (ctx.state.user) {
+        authority = await getUserAuth(ctx.state.user.data.id)
+    }
     let authPaths = {}
     if (authority.all) {
         return next()
@@ -38,6 +43,8 @@ router.all('*', async (ctx, next) => {
                 let apiPath = parentPath + child.apiKey
                 if (authority[item.id] && authority[item.id][child.id]) {
                     authPaths[apiPath] = authority[item.id][child.id]
+                } else {
+                    authPaths[apiPath] = 0
                 }
             })
         }
@@ -47,7 +54,7 @@ router.all('*', async (ctx, next) => {
     const endTag = path.substring(path.lastIndexOf('/') + 1)
     let isTag = false
     let valid = false
-    if (authPaths[basePath]) {
+    if (authPaths[basePath] || authPaths[basePath] === 0) {
         types.forEach((str, index) => {
             let marks = str.split('|')
             let result = marks.find(tag => tag == endTag)

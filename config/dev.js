@@ -19,10 +19,10 @@ module.exports = {
         ttl: 7200
     },
     mysql: {
-        database: 'test',
+        database: 'github_demo',
         username: 'root',
-        password: 'xxxxxx',
-        host: 'xxxxxxx',
+        password: 'www-2018.12.31',
+        host: 'localhost',
         port: '3306',
         pool: {
             max: 20,
