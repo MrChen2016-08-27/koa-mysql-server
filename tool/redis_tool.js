@@ -35,3 +35,16 @@ exports.set = (key, value, seconds) => {
         })
     })
 }
+
+
+exports.setPermanent = (key, value) => {
+    return new Promise((resolve, reject) => {
+        store.set(key, value, function (err) {
+            if (err) {
+                reject(err)
+            } else {
+                resolve()
+            }
+        })
+    })
+}

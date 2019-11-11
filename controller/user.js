@@ -100,7 +100,7 @@ exports.login = async (ctx, next) => {
         username: result.username,
     }
     // 权限存到redis中对应用户id
-    redis.set(`user_auth_${result.id}`, JSON.stringify(result.authority));
+    await this.setUserAuth(result.id, JSON.stringify(result.authority))
     ctx.rest({
         token: jwt.sign({ data: uData }, config.jwt.secret, {
             expiresIn: config.jwt.expiresIn
@@ -295,13 +295,27 @@ exports.getUserList = async (ctx, next) => {
 }
 
 exports.getUserAuth = async (userId) => {
-    let authority = await redisTool.get(`user_auth_${userId}`)
-    if (!authority) {
+    let userAuth = await redisTool.get('user_auth')
+    if (!userAuth) {
+        userAuth = {}
+    } else {
+        userAuth = JSON.parse(userAuth)
+    }
+    let authority = null
+    if (!userAuth[userId]) {
         let result = await userApi.getUserRole(userId)
         authority = getRolesMaxAuth(result.roles)
-        redis.set(`user_auth_${userId}`, JSON.stringify(authority))
+        userAuth[userId] = JSON.stringify(authority)
+        redisTool.setPermanent('user_auth', userAuth)
     } else {
-        authority = JSON.parse(authority)
+        authority = JSON.parse(userAuth[userId])
     }
     return authority
+}
+
+exports.setUserAuth = async (userId, authority) => {
+    let userAuth = await redisTool.get('user_auth')
+    userAuth = JSON.parse(userAuth)
+    userAuth[userId] = authority
+    await redisTool.setPermanent('user_auth', userAuth)
 }
