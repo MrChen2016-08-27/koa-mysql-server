@@ -39,7 +39,7 @@
     "node-rsa": "^1.0.0",
     "node-xlsx": "^0.12.1",
     "pug": "^2.0.0-rc.1",
-    "sequelize": "^4.42.0"
+    "sequelize": "^5.15.1"
   },
   "devDependencies": {
     "axios": "^0.18.0",
