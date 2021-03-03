@@ -38,7 +38,7 @@
     "mysql2": "^1.6.4",
     "node-rsa": "^1.0.0",
     "node-xlsx": "^0.12.1",
-    "pug": "^2.0.0-rc.1",
+    "pug": "^3.0.1",
     "sequelize": "^4.42.0"
   },
   "devDependencies": {
