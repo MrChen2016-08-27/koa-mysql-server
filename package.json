@@ -16,7 +16,7 @@
     "del": "^3.0.0",
     "ejs": "^2.6.1",
     "formidable": "^1.2.1",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-minify-css": "^1.2.4",
     "gulp-postcss": "^7.0.1",
     "gulp-rev": "^8.1.1",
